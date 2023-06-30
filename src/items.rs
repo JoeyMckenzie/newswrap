@@ -1,6 +1,9 @@
+//! Item response types associated to various Hacker News posts, comments, users, etc.
+
 use serde::Deserialize;
 
 /// Hacker News response type included on each item retrieval.
+#[derive(Debug, Clone, Copy)]
 pub enum HackerNewsMediaType {
     /// The comment type, representing comments on articles and users.
     Comment,
@@ -14,6 +17,7 @@ pub enum HackerNewsMediaType {
     Story,
 }
 
+/// Represents a Hacker News item returned from the item endpoint.
 #[derive(Debug, Deserialize)]
 pub struct HackerNewsItem {
     id: u32,

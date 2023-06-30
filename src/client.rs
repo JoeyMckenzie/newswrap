@@ -2,6 +2,8 @@
 
 use std::cell::OnceCell;
 
+use crate::{errors::ClientError, items::HackerNewsItem};
+
 const API_BASE_URL: &str = "https://hacker-news.firebaseio.com";
 const ITEM_ENDPOINT: &str = "item";
 
@@ -56,7 +58,8 @@ impl HackerNewsClient {
         self.http_client.clone()
     }
 
-    pub async fn get_item(&self, id: u32) -> Result<(), Box<dyn std::error::Error>> {
+    /// Retrieves item information based on the given ID.
+    pub async fn get_item(&self, id: u32) -> Result<HackerNewsItem, ClientError> {
         let item = self
             .http_client
             .get()
@@ -69,11 +72,9 @@ impl HackerNewsClient {
             ))
             .send()
             .await?
-            .json()
+            .json::<HackerNewsItem>()
             .await?;
 
-        dbg!(item);
-
-        Ok(())
+        Ok(item)
     }
 }

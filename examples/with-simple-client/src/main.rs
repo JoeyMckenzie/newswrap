@@ -8,5 +8,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Call various endpoints with your client instance
     let first_item = client.get_item(12).await?;
 
+    dbg!(first_item);
+
     Ok(())
 }

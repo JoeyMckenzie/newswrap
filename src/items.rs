@@ -14,10 +14,10 @@ pub enum HackerNewsMediaType {
     Story,
 }
 
-#[derive(Deserialize)]
-pub struct ItemResponse {
-    id: i32,
-    deleted: bool,
+#[derive(Debug, Deserialize)]
+pub struct HackerNewsItem {
+    id: u32,
+    deleted: Option<bool>,
     #[serde(rename = "type")]
-    responseType: String,
+    response_type: String,
 }

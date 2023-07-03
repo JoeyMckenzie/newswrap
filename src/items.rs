@@ -5,11 +5,11 @@ use time::OffsetDateTime;
 
 use crate::HackerNewsID;
 
-const ITEM_TYPE_COMMENT: &'static str = "comment";
-const ITEM_TYPE_JOB: &'static str = "job";
-const ITEM_TYPE_POLL: &'static str = "poll";
-const ITEM_TYPE_POLLOPT: &'static str = "pollopt";
-const ITEM_TYPE_STORY: &'static str = "story";
+const ITEM_TYPE_COMMENT: &str = "comment";
+const ITEM_TYPE_JOB: &str = "job";
+const ITEM_TYPE_POLL: &str = "poll";
+const ITEM_TYPE_POLLOPT: &str = "pollopt";
+const ITEM_TYPE_STORY: &str = "story";
 
 /// Hacker News response type included on each item retrieval.
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]

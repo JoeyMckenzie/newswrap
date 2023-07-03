@@ -5,5 +5,5 @@
 # NOTE: Sadly, mold is not supported on macOS and required the commercial version
 # instead (https://bluewhale.systems/)
 #
-[build]
-rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+# [build]
+# rustflags = ["-C", "link-arg=-fuse-ld=lld"]

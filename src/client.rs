@@ -2,10 +2,13 @@
 
 use std::cell::OnceCell;
 
-use crate::{errors::ClientError, items::HackerNewsItem};
+use crate::{
+    errors::HackerNewsClientError, items::HackerNewsItem, users::HackerNewsUser, HackerNewsID,
+};
 
 const API_BASE_URL: &str = "https://hacker-news.firebaseio.com";
 const ITEM_ENDPOINT: &str = "item";
+const USERS_ENDPOINT: &str = "user";
 
 /// Version information for the Hacker News API containing the base URLs.
 #[derive(Debug, Clone, Copy)]
@@ -34,7 +37,10 @@ impl Default for HackerNewsClient {
 impl HackerNewsClient {
     /// Constructs a new implementation of the client pointing to the latest Hacker News API version.
     pub fn new() -> Self {
-        let client = reqwest::Client::new();
+        let client = reqwest::ClientBuilder::new()
+            .timeout(std::time::Duration::from_secs(10))
+            .build()
+            .unwrap();
         let celled_client = OnceCell::<reqwest::Client>::new();
         celled_client.get_or_init(|| client);
 
@@ -53,13 +59,11 @@ impl HackerNewsClient {
         format!("{}/{}", API_BASE_URL, version)
     }
 
-    /// Returns a cloned instance of the celled HTTP client.
-    pub fn clone_client(&self) -> OnceCell<reqwest::Client> {
-        self.http_client.clone()
-    }
-
     /// Retrieves item information based on the given ID.
-    pub async fn get_item(&self, id: u32) -> Result<HackerNewsItem, ClientError> {
+    pub async fn get_item(
+        &self,
+        id: HackerNewsID,
+    ) -> Result<HackerNewsItem, HackerNewsClientError> {
         let item = self
             .http_client
             .get()
@@ -76,5 +80,25 @@ impl HackerNewsClient {
             .await?;
 
         Ok(item)
+    }
+
+    /// Retrieves a user from the user endpoint based on the provided username.
+    pub async fn get_user(&self, username: &str) -> Result<HackerNewsUser, HackerNewsClientError> {
+        let user = self
+            .http_client
+            .get()
+            .unwrap()
+            .get(format!(
+                "{}/{}/{}.json",
+                self.versioned_api_base_url(),
+                USERS_ENDPOINT,
+                username
+            ))
+            .send()
+            .await?
+            .json::<HackerNewsUser>()
+            .await?;
+
+        Ok(user)
     }
 }

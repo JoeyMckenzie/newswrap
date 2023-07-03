@@ -7,8 +7,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Call various endpoints with your client instance
     let first_item = client.get_item(12).await?;
+    dbg!(&first_item);
 
-    dbg!(first_item);
+    // Determine what the item type is
+    let item_type = first_item.get_item_type();
+    dbg!(item_type);
+
+    // Check if the item is job
+    assert!(first_item.is_comment());
+
+    // Retrieve user information
+    let user = client.get_user("joeymckenzie").await;
 
     Ok(())
 }

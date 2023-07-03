@@ -18,6 +18,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Retrieve user information
     let user = client.get_user("joeymckenzie").await;
+    dbg!(user);
 
     Ok(())
 }

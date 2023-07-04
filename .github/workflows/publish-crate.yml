@@ -1,10 +1,9 @@
-name: Build and deploy to crates.io
+name: Deploy to crates.io
 
 on:
-  workflow_run:
-    workflows: ["Build, test, lint, and format"]
-    types:
-      - completed
+  create:
+    tags:
+      - v*
 
 env:
   CARGO_TERM_COLOR: always

@@ -6,7 +6,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = HackerNewsClient::new();
 
     // Call various endpoints with your client instance
-    let first_item = client.get_item(12).await?;
+    let first_item = client.get_item(69).await?;
     dbg!(&first_item);
 
     // Determine what the item type is

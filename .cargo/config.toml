@@ -1,9 +1,0 @@
-# Note: mold is lld's modern successor only available on Linux/macOS
-# Read more about the project here: https://github.com/rui314/mold
-# if your gcc version is recent enough, you can remove clang as your linker
-#
-# NOTE: Sadly, mold is not supported on macOS and required the commercial version
-# instead (https://bluewhale.systems/)
-#
-# [build]
-# rustflags = ["-C", "link-arg=-fuse-ld=lld"]

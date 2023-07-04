@@ -3,7 +3,7 @@ members = [".", "examples/*"]
 
 [package]
 name = "hacker-rs"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 authors = ["Joey McKenzie <joey.mckenzie27@gmail.com>"]

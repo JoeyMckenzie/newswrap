@@ -14,7 +14,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dbg!(item_type);
 
     // Check if the item is job
-    assert!(first_item.is_comment());
+    assert!(first_item.is_story());
 
     // Retrieve user information
     let user = client.get_user("joeymckenzie").await?;

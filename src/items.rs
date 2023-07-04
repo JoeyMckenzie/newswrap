@@ -50,17 +50,17 @@ pub struct HackerNewsItem {
     /// The pollopt's associated poll.
     pub poll: Option<HackerNewsID>,
     /// The ids of the item's comments, in ranked display order.
-    pub kids: Vec<HackerNewsID>,
+    pub kids: Option<Vec<HackerNewsID>>,
     /// The URL of the story.
     pub url: Option<String>,
     /// The story's score, or the votes for a pollopt.
-    pub score: u32,
+    pub score: Option<u32>,
     /// The title of the story, poll or job. HTML.
-    pub title: String,
+    pub title: Option<String>,
     /// A list of related pollopts, in display order.
-    pub parts: Vec<HackerNewsID>,
+    pub parts: Option<Vec<HackerNewsID>>,
     /// In the case of stories or polls, the total comment count.
-    pub descendants: u32,
+    pub descendants: Option<u32>,
 }
 
 impl HackerNewsItem {

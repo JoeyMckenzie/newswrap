@@ -1,0 +1,26 @@
+name: Build and deploy to crates.io
+
+on:
+  workflow_run:
+    workflows: ["Build, test, lint, and format"]
+    types:
+      - completed
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+      - uses: rui314/setup-mold@v1
+
+      - name: Install cargo-release
+        run: cargo install --locked cargo-release
+
+      - name: Deploy to crates.io
+        run: cargo publish --token ${CARGO_REGISTRY_TOKEN}
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}

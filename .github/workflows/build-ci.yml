@@ -1,4 +1,4 @@
-name: Build and deploy to crates.io
+name: Build, test, lint, and format
 
 on:
   push:
@@ -27,12 +27,10 @@ jobs:
         run: rustup toolchain install nightly
 
       - name: Add rust fmt
-        run: rustup component add rustfmt --toolchain nightly-x86_64-unknown-linux-gnu
+        run: rustup component add rustfmt clippy --toolchain nightly-x86_64-unknown-linux-gnu
+
+      - name: Run clippy
+        run: cargo clippy -v
 
       - name: Run rust formatter checks
         run: cargo fmt --all -- --check
-
-      - name: Deploy to crates.io
-        run: cargo publish --token ${CARGO_REGISTRY_TOKEN}
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}

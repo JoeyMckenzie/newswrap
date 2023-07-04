@@ -1,6 +1,6 @@
 //! [Hacker News](https://news.ycombinator.com/) API bindings for Rust.
 //!
-//! ```
+//! ```no_run
 //! use hacker_rs::client::HackerNewsClient;
 //!
 //! #[tokio::main]

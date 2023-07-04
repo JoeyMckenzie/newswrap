@@ -52,7 +52,7 @@ pub struct HackerNewsItem {
     /// The ids of the item's comments, in ranked display order.
     pub kids: Vec<HackerNewsID>,
     /// The URL of the story.
-    pub url: String,
+    pub url: Option<String>,
     /// The story's score, or the votes for a pollopt.
     pub score: u32,
     /// The title of the story, poll or job. HTML.

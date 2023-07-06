@@ -1,5 +1,7 @@
 //! Item response types associated to various Hacker News posts, comments, users, etc.
 
+use std::fmt::Display;
+
 use serde::Deserialize;
 use time::OffsetDateTime;
 
@@ -26,6 +28,12 @@ pub enum HackerNewsItemType {
     Story,
     /// An unknown type in the case a match is not found for the item type
     Unknown,
+}
+
+impl Display for HackerNewsItemType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", self)
+    }
 }
 
 /// Represents a Hacker News item returned from the item endpoint.

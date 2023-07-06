@@ -107,20 +107,8 @@ impl HackerNewsClient {
         &self,
         id: HackerNewsID,
     ) -> Result<HackerNewsStory, HackerNewsClientError> {
-        let story = self
-            .http_client
-            .get(format!(
-                "{}/{}/{}.json",
-                self.versioned_api_base_url(),
-                ITEM_ENDPOINT,
-                id
-            ))
-            .send()
-            .await?
-            .json::<HackerNewsStory>()
-            .await?;
-        // .map_err(|_| HackerNewsClientError::InvalidTypeMapping("story".to_string()))?;
-
+        let item = self.get_item(id).await?;
+        let story = item.try_into()?;
         Ok(story)
     }
 }

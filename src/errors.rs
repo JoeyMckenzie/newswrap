@@ -2,6 +2,8 @@
 
 use thiserror::Error;
 
+use crate::items::HackerNewsItemType;
+
 /// Exported types for handling internal errors with the client.
 #[derive(Debug, Error)]
 pub enum HackerNewsClientError {
@@ -10,5 +12,5 @@ pub enum HackerNewsClientError {
     RequestError(#[from] reqwest::Error),
     /// Represents an error that occurred while attempting to parse the response into an invalid Hacker News item subtype.
     #[error("The requested item was not a valid {0} type.")]
-    InvalidTypeMapping(String),
+    InvalidTypeMapping(HackerNewsItemType),
 }

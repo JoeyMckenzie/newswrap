@@ -10,30 +10,26 @@ use crate::{
 
 /// Represents a Hacker News story and all associated data to it including author, text, and child comments.
 #[derive(Debug)]
-pub struct HackerNewsStory {
+pub struct HackerNewsComment {
     /// The item's unique id.
     pub id: HackerNewsID,
-    /// The total comment count.
-    pub number_of_comments: u32,
     /// A list of associated child comment IDs.
-    pub comments: Vec<HackerNewsID>,
-    /// The story's total number of upvotes.
-    pub score: u32,
-    /// Creation date of the story.
+    pub sub_comments: Vec<HackerNewsID>,
+    /// Creation date of the comment.
     pub created_at: OffsetDateTime,
-    /// Title of the story.
-    pub title: String,
-    /// URL of the story.
-    pub url: String,
-    /// Username of the story poster.
+    /// The ID of the parent story.
+    pub parent_story: HackerNewsID,
+    /// Content of the comment.
+    pub text: String,
+    /// Username of the comment poster.
     pub by: String,
 }
 
-impl TryFrom<HackerNewsItem> for HackerNewsStory {
+impl TryFrom<HackerNewsItem> for HackerNewsComment {
     type Error = HackerNewsClientError;
 
     fn try_from(item: HackerNewsItem) -> Result<Self, Self::Error> {
-        if item.get_item_type() != HackerNewsItemType::Story {
+        if item.get_item_type() != HackerNewsItemType::Comment {
             return Err(HackerNewsClientError::InvalidTypeMapping(
                 item.get_item_type(),
             ));
@@ -41,12 +37,10 @@ impl TryFrom<HackerNewsItem> for HackerNewsStory {
 
         Ok(Self {
             id: item.id,
-            number_of_comments: item.descendants.unwrap_or(0),
-            comments: item.kids.unwrap_or_default(),
-            score: item.score.unwrap_or(0),
+            sub_comments: item.kids.unwrap_or_default(),
             created_at: item.created_at,
-            title: item.title.unwrap_or_default(),
-            url: item.url.unwrap_or_default(),
+            parent_story: item.parent.unwrap_or_default(),
+            text: item.text.unwrap_or_default(),
             by: item.by.unwrap_or_default(),
         })
     }

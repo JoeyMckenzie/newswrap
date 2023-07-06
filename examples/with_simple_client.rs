@@ -9,15 +9,24 @@ async fn main() -> Result<(), HackerNewsClientError> {
     let _client_with_timeout = HackerNewsClient::new_with_timeout(2);
 
     // Call various endpoints with your client instance
-    let first_item = client.get_item(69).await?;
-    dbg!(&first_item);
+    let unknown_item = client.get_item(69).await?;
+    dbg!(&unknown_item);
 
     // Determine what the item type is
-    let item_type = first_item.get_item_type();
+    let item_type = unknown_item.get_item_type();
     dbg!(item_type);
 
     // Check if the item is job
-    assert!(first_item.is_story());
+    assert!(unknown_item.is_story());
+
+    // Conveniently request typed items for known IDs
+    let story_item = client.get_story(69).await?;
+    dbg!(&story_item);
+
+    // Get child comments associated to the story
+    let comment = client
+        .get_item(*story_item.comments.first().unwrap())
+        .await?;
 
     // Retrieve user information
     let user = client.get_user("joeymckenzie").await?;

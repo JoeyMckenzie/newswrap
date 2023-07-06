@@ -4,6 +4,9 @@ use thiserror::Error;
 
 use crate::items::HackerNewsItemType;
 
+/// A generic result type mapping downstream errors to their library equivalents.
+pub type HackerNewsResult<T> = Result<T, HackerNewsClientError>;
+
 /// Exported types for handling internal errors with the client.
 #[derive(Debug, Error)]
 pub enum HackerNewsClientError {

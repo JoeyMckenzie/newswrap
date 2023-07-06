@@ -65,6 +65,8 @@ pub struct HackerNewsItem {
     pub score: Option<u32>,
     /// The title of the story, poll or job. HTML.
     pub title: Option<String>,
+    /// The comment, story or poll text. HTML.
+    pub text: Option<String>,
     /// A list of related pollopts, in display order.
     pub parts: Option<Vec<HackerNewsID>>,
     /// In the case of stories or polls, the total comment count.

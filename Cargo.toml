@@ -2,12 +2,13 @@
 name = "hacker-rs"
 version = "0.1.3"
 edition = "2021"
-license = "MIT"
+license = "MIT or Apache-2.0"
+documentation = "https://docs.rs/hacker-rs"
+homepage = "https://github.com/joeymckenzie/hacker-rs/"
+repository = "https://github.com/joeymckenzie/hacker-rs/"
 authors = ["Joey McKenzie <joey.mckenzie27@gmail.com>"]
 keywords = ["hackernews"]
 categories = ["api-bindings"]
-homepage = "https://github.com/joeymckenzie/hacker-rs/"
-repository = "https://github.com/joeymckenzie/hacker-rs/"
 readme = "README.md"
 description = "Hacker News API bindings for rust."
 
@@ -20,6 +21,7 @@ time = { version = "0.3", features = ["serde-well-known"] }
 
 [dev-dependencies]
 tokio = { version = "1", features = ["full"] }
+axum = "0.6"
 
 [[example]]
 name = "simple"
@@ -27,4 +29,4 @@ path = "examples/with_simple_client.rs"
 
 [[example]]
 name = "stories"
-path = "examples/with_stories.rs"
+path = "examples/with_axum.rs"

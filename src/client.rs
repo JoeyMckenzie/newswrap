@@ -1,9 +1,9 @@
 //! Hacker News API client bindings and various methods for interacting.
 
 use crate::{
-    errors::HackerNewsClientError, items::HackerNewsItem, stories::HackerNewsStory,
-    users::HackerNewsUser, HackerNewsID, API_BASE_URL, DEFAULT_TIMEOUT_SECONDS, ITEM_ENDPOINT,
-    USERS_ENDPOINT,
+    comments::HackerNewsComment, errors::HackerNewsResult, items::HackerNewsItem,
+    stories::HackerNewsStory, users::HackerNewsUser, HackerNewsID, API_BASE_URL,
+    DEFAULT_TIMEOUT_SECONDS, ITEM_ENDPOINT, USERS_ENDPOINT,
 };
 
 /// Version information for the Hacker News API containing the base URLs.
@@ -64,10 +64,7 @@ impl HackerNewsClient {
     }
 
     /// Retrieves item information based on the given ID.
-    pub async fn get_item(
-        &self,
-        id: HackerNewsID,
-    ) -> Result<HackerNewsItem, HackerNewsClientError> {
+    pub async fn get_item(&self, id: HackerNewsID) -> HackerNewsResult<HackerNewsItem> {
         let item = self
             .http_client
             .get(format!(
@@ -85,7 +82,7 @@ impl HackerNewsClient {
     }
 
     /// Retrieves a user from the user endpoint based on the provided username.
-    pub async fn get_user(&self, username: &str) -> Result<HackerNewsUser, HackerNewsClientError> {
+    pub async fn get_user(&self, username: &str) -> HackerNewsResult<HackerNewsUser> {
         let user = self
             .http_client
             .get(format!(
@@ -103,12 +100,16 @@ impl HackerNewsClient {
     }
 
     /// Retrieves a story from Hacker News, returning errors if the item was not a valid story type.
-    pub async fn get_story(
-        &self,
-        id: HackerNewsID,
-    ) -> Result<HackerNewsStory, HackerNewsClientError> {
+    pub async fn get_story(&self, id: HackerNewsID) -> HackerNewsResult<HackerNewsStory> {
         let item = self.get_item(id).await?;
         let story = item.try_into()?;
         Ok(story)
+    }
+
+    /// Retrieves a story comment from Hacker News, returning errors if the item was not a valid comment type.
+    pub async fn get_comment(&self, id: HackerNewsID) -> HackerNewsResult<HackerNewsComment> {
+        let item = self.get_item(id).await?;
+        let comment = item.try_into()?;
+        Ok(comment)
     }
 }

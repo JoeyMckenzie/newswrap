@@ -19,6 +19,7 @@
 //! dbg!(user);
 //! ```
 
+#![feature(type_alias_impl_trait)]
 #![forbid(unsafe_code, dead_code)]
 #![warn(
     missing_docs,
@@ -31,6 +32,7 @@
 )]
 
 pub mod client;
+pub mod comments;
 pub mod errors;
 pub mod items;
 pub mod stories;

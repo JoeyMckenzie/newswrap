@@ -1,14 +1,10 @@
 //! Hacker News API client bindings and various methods for interacting.
 
-use std::cell::OnceCell;
-
 use crate::{
-    errors::HackerNewsClientError, items::HackerNewsItem, users::HackerNewsUser, HackerNewsID,
+    errors::HackerNewsClientError, items::HackerNewsItem, stories::HackerNewsStory,
+    users::HackerNewsUser, HackerNewsID, API_BASE_URL, DEFAULT_TIMEOUT_SECONDS, ITEM_ENDPOINT,
+    USERS_ENDPOINT,
 };
-
-const API_BASE_URL: &str = "https://hacker-news.firebaseio.com";
-const ITEM_ENDPOINT: &str = "item";
-const USERS_ENDPOINT: &str = "user";
 
 /// Version information for the Hacker News API containing the base URLs.
 #[derive(Debug, Clone, Copy)]
@@ -23,7 +19,7 @@ pub enum ApiVersion {
 #[derive(Debug)]
 pub struct HackerNewsClient {
     /// An internal HTTP client to be used for connections to the Hacker News API.
-    http_client: OnceCell<reqwest::Client>,
+    http_client: reqwest::Client,
     /// The internal version of the Hacker News API your client will target.
     version: ApiVersion,
 }
@@ -35,19 +31,27 @@ impl Default for HackerNewsClient {
 }
 
 impl HackerNewsClient {
-    /// Constructs a new implementation of the client pointing to the latest Hacker News API version.
-    pub fn new() -> Self {
+    /// Internally constructs the client allowing for flexibility in configuring the timeout.
+    fn new_client(timeout: u64) -> Self {
         let client = reqwest::ClientBuilder::new()
-            .timeout(std::time::Duration::from_secs(10))
+            .timeout(std::time::Duration::from_secs(timeout))
             .build()
             .unwrap();
-        let celled_client = OnceCell::<reqwest::Client>::new();
-        celled_client.get_or_init(|| client);
 
         Self {
-            http_client: celled_client,
+            http_client: client,
             version: ApiVersion::V0,
         }
+    }
+
+    /// Constructs a new client pointing to the latest Hacker News API version.
+    pub fn new() -> Self {
+        Self::new_client(DEFAULT_TIMEOUT_SECONDS)
+    }
+
+    /// Constructs a new client pointing to the latest Hacker News API version with the configured request timeout.
+    pub fn new_with_timeout(timeout: u64) -> Self {
+        Self::new_client(timeout)
     }
 
     /// Constructs the base URL including the version.
@@ -66,8 +70,6 @@ impl HackerNewsClient {
     ) -> Result<HackerNewsItem, HackerNewsClientError> {
         let item = self
             .http_client
-            .get()
-            .unwrap()
             .get(format!(
                 "{}/{}/{}.json",
                 self.versioned_api_base_url(),
@@ -86,8 +88,6 @@ impl HackerNewsClient {
     pub async fn get_user(&self, username: &str) -> Result<HackerNewsUser, HackerNewsClientError> {
         let user = self
             .http_client
-            .get()
-            .unwrap()
             .get(format!(
                 "{}/{}/{}.json",
                 self.versioned_api_base_url(),
@@ -100,5 +100,27 @@ impl HackerNewsClient {
             .await?;
 
         Ok(user)
+    }
+
+    /// Retrieves a story from Hacker News, returning errors if the item was not a valid story type.
+    pub async fn get_story(
+        &self,
+        id: HackerNewsID,
+    ) -> Result<HackerNewsStory, HackerNewsClientError> {
+        let story = self
+            .http_client
+            .get(format!(
+                "{}/{}/{}.json",
+                self.versioned_api_base_url(),
+                ITEM_ENDPOINT,
+                id
+            ))
+            .send()
+            .await?
+            .json::<HackerNewsStory>()
+            .await?;
+        // .map_err(|_| HackerNewsClientError::InvalidTypeMapping("story".to_string()))?;
+
+        Ok(story)
     }
 }

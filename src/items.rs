@@ -41,8 +41,8 @@ pub struct HackerNewsItem {
     /// The username of the item's author.
     pub by: Option<String>,
     /// Creation date of the item, in Unix Time.
-    #[serde(with = "time::serde::timestamp")]
-    pub time: OffsetDateTime,
+    #[serde(with = "time::serde::timestamp", rename = "time")]
+    pub created_at: OffsetDateTime,
     /// Flag representing active state, true if the item is dead.
     pub dead: Option<bool>,
     /// The comment's parent: either another comment or the relevant story.

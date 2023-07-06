@@ -24,3 +24,7 @@ tokio = { version = "1", features = ["full"] }
 [[example]]
 name = "simple"
 path = "examples/with_simple_client.rs"
+
+[[example]]
+name = "stories"
+path = "examples/with_stories.rs"

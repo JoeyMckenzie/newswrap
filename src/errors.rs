@@ -8,4 +8,7 @@ pub enum HackerNewsClientError {
     /// Reports errors that occur when making HTTP requests to Hacker News.
     #[error("{0}")]
     RequestError(#[from] reqwest::Error),
+    /// Represents an error that occurred while attempting to parse the response into an invalid Hacker News item subtype.
+    #[error("The requested item was not a valid {0} type.")]
+    InvalidTypeMapping(String),
 }

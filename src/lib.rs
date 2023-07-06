@@ -33,7 +33,20 @@
 pub mod client;
 pub mod errors;
 pub mod items;
+pub mod stories;
 pub mod users;
 
 /// The ID associated to all Hacker News items and users.
 type HackerNewsID = u32;
+
+/// Current URL of the API.
+pub const API_BASE_URL: &str = "https://hacker-news.firebaseio.com";
+
+/// Item endpoint for stories, polls, news items, etc.
+pub const ITEM_ENDPOINT: &str = "item";
+
+/// User endpoint for user data and related items.
+pub const USERS_ENDPOINT: &str = "user";
+
+/// Default timeout for requests the API.
+pub const DEFAULT_TIMEOUT_SECONDS: u64 = 10;

@@ -1,9 +1,12 @@
-use hacker_rs::client::HackerNewsClient;
+use hacker_rs::{client::HackerNewsClient, errors::HackerNewsClientError};
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> Result<(), HackerNewsClientError> {
     // Build your client at the start of your application process
     let client = HackerNewsClient::new();
+
+    // Optionally build your client with a configured request timeout
+    let _client_with_timeout = HackerNewsClient::new_with_timeout(2);
 
     // Call various endpoints with your client instance
     let first_item = client.get_item(69).await?;

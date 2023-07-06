@@ -2,7 +2,7 @@
 name = "hacker-rs"
 version = "0.1.4"
 edition = "2021"
-license = "MIT or Apache-2.0"
+license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/hacker-rs"
 homepage = "https://github.com/joeymckenzie/hacker-rs/"
 repository = "https://github.com/joeymckenzie/hacker-rs/"

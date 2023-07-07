@@ -3,7 +3,7 @@
 [Hacker News](https://news.ycombinator.com/) API bindings for Rust.
 
 ```rust
-use hacker_rs::client::HackerNewsClient;
+use newswrap::client::HackerNewsClient;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

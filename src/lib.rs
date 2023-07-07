@@ -1,7 +1,7 @@
 //! [Hacker News](https://news.ycombinator.com/) API bindings for Rust.
 //!
 //! ```
-//! use hacker_rs::{client::HackerNewsClient, errors::HackerNewsClientError};
+//! use newswrap::{client::HackerNewsClient, errors::HackerNewsClientError};
 //!
 //! #[tokio::main]
 //! async fn main() -> Result<(), HackerNewsClientError> {

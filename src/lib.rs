@@ -52,11 +52,8 @@
 )]
 
 pub mod client;
-pub mod comments;
 pub mod errors;
 pub mod items;
-pub mod jobs;
-pub mod stories;
 pub mod users;
 
 /// The ID associated to all Hacker News items and users.

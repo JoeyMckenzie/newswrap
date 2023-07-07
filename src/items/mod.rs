@@ -1,4 +1,12 @@
 //! Item response types associated to various Hacker News posts, comments, users, etc.
+//! Items are top level items in the Hacker News API and represent all stories, comments,
+//! polls, jobs, and pollopts. Items contain a `type` identifying which entity they represent.
+
+pub mod comments;
+pub mod jobs;
+pub mod poll;
+pub mod poll_option;
+pub mod stories;
 
 use std::fmt::Display;
 

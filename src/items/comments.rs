@@ -1,4 +1,4 @@
-//! Stories listed on the Hacker News homepage and all associated data.
+//! Story comments associated to Hacker News stories  and all associated data.
 
 use time::OffsetDateTime;
 
@@ -8,7 +8,7 @@ use crate::{
     HackerNewsID,
 };
 
-/// Represents a Hacker News story and all associated data to it including author, text, and child comments.
+/// Represents a Hacker News story comment and all associated data to it including author and child comments.
 #[derive(Debug)]
 pub struct HackerNewsComment {
     /// The item's unique id.

@@ -1,6 +1,6 @@
 # newswrap
 
-[![crates.io](https://github.com/JoeyMckenzie/newswrap/actions/workflows/publish-crate.yml/badge.svg)](https://github.com/JoeyMckenzie/newswrap/actions/workflows/publish-crate.yml) [![CI](https://github.com/JoeyMckenzie/newswrap/actions/workflows/build-ci.yml/badge.svg)](https://github.com/JoeyMckenzie/newswrap/actions/workflows/build-ci.yml)
+[![Deploy to crates.io](https://github.com/JoeyMckenzie/newswrap/actions/workflows/publish-crate.yml/badge.svg?event=create)](https://github.com/JoeyMckenzie/newswrap/actions/workflows/publish-crate.yml) [![CI](https://github.com/JoeyMckenzie/newswrap/actions/workflows/build-ci.yml/badge.svg)](https://github.com/JoeyMckenzie/newswrap/actions/workflows/build-ci.yml)
 
 [Hacker News](https://news.ycombinator.com/) API bindings for Rust, and yes... ChatGPT picked the name.
 
@@ -30,3 +30,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+
+## What is newswrap?
+
+newswrap provides a convenient Rust interface for the Hacker News API.

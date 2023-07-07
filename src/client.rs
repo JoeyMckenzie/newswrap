@@ -2,8 +2,8 @@
 
 use crate::{
     comments::HackerNewsComment, errors::HackerNewsResult, items::HackerNewsItem,
-    stories::HackerNewsStory, users::HackerNewsUser, HackerNewsID, API_BASE_URL,
-    DEFAULT_TIMEOUT_SECONDS, ITEM_ENDPOINT, USERS_ENDPOINT,
+    jobs::HackerNewsJob, stories::HackerNewsStory, users::HackerNewsUser, HackerNewsID,
+    API_BASE_URL, DEFAULT_TIMEOUT_SECONDS, ITEM_ENDPOINT, USERS_ENDPOINT,
 };
 
 /// Version information for the Hacker News API containing the base URLs.
@@ -111,5 +111,12 @@ impl HackerNewsClient {
         let item = self.get_item(id).await?;
         let comment = item.try_into()?;
         Ok(comment)
+    }
+
+    /// Retrieves a job posting from Hacker News, returning errors if the item was not a valid job posting type.
+    pub async fn get_job(&self, id: HackerNewsID) -> HackerNewsResult<HackerNewsJob> {
+        let item = self.get_item(id).await?;
+        let job = item.try_into()?;
+        Ok(job)
     }
 }

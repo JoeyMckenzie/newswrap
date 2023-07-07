@@ -55,6 +55,7 @@ pub mod client;
 pub mod comments;
 pub mod errors;
 pub mod items;
+pub mod jobs;
 pub mod stories;
 pub mod users;
 

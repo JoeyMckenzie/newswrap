@@ -1,4 +1,4 @@
-//! Polls listed on Hacker News and all associated data.
+//! Poll options associated to a poll.
 
 use time::OffsetDateTime;
 
@@ -8,37 +8,35 @@ use crate::{
     HackerNewsID,
 };
 
-/// Represents a Hacker News poll and all associated data including comments on the poll, poll options, etc.
+/// Represents a Hacker News poll option and all associated data to it including the parent poll and author.
 #[derive(Debug)]
-pub struct HackerNewsPoll {
+pub struct HackerNewsPollOption {
     /// The item's unique id.
     pub id: HackerNewsID,
-    /// The number of users participating in the poll.
-    pub participants: u32,
-    /// The associated comments on the poll.
-    pub comments: Vec<HackerNewsID>,
-    /// The associated poll choices.
-    pub parts: Vec<HackerNewsID>,
+    /// The parent poll ID of the poll option.
+    pub poll: u32,
     /// The number of upvotes on the job posting.
     pub score: u32,
     /// Creation date of the job posting.
     pub created_at: OffsetDateTime,
-    /// The job listing title.
-    pub title: String,
     /// The job listing description.
     pub text: String,
     /// Username of the job poster.
     pub by: String,
 }
 
-impl TryFrom<HackerNewsItem> for HackerNewsPoll {
+impl TryFrom<HackerNewsItem> for HackerNewsPollOption {
     type Error = HackerNewsClientError;
 
     fn try_from(item: HackerNewsItem) -> Result<Self, Self::Error> {
-        if item.get_item_type() != HackerNewsItemType::Comment {
+        if item.get_item_type() != HackerNewsItemType::PollOption {
             return Err(HackerNewsClientError::InvalidTypeMapping(
                 item.get_item_type(),
             ));
+        }
+
+        if item.poll.is_none() {
+            return Err(HackerNewsClientError::AssociatedParentNotFound(item.id));
         }
 
         Ok(Self {
@@ -47,10 +45,7 @@ impl TryFrom<HackerNewsItem> for HackerNewsPoll {
             text: item.text.unwrap_or_default(),
             by: item.by.unwrap_or_default(),
             score: item.score.unwrap_or(0),
-            title: item.title.unwrap_or_default(),
-            participants: item.descendants.unwrap_or(0),
-            comments: item.kids.unwrap_or_default(),
-            parts: item.parts.unwrap_or_default(),
+            poll: item.poll.unwrap(),
         })
     }
 }

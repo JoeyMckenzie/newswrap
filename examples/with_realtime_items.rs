@@ -5,10 +5,8 @@ async fn main() -> Result<(), HackerNewsClientError> {
     // Build your client at the start of your application process
     let client = HackerNewsClient::new();
 
-    // Optionally build your client with a configured request timeout in seconds or a custom duration
+    // Optionally build your client with a configured request timeout
     let _client_with_timeout = HackerNewsClient::new_with_timeout_secs(2);
-    let _client_with_duration =
-        HackerNewsClient::new_with_timeout_duration(std::time::Duration::from_millis(500));
 
     // Call various endpoints with your client instance
     let generic_item = client.get_item(69).await?;

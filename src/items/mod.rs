@@ -4,8 +4,8 @@
 
 pub mod comments;
 pub mod jobs;
-pub mod poll;
-pub mod poll_option;
+pub mod poll_options;
+pub mod polls;
 pub mod stories;
 
 use std::fmt::Display;
@@ -26,13 +26,13 @@ const ITEM_TYPE_STORY: &str = "story";
 pub enum HackerNewsItemType {
     /// The comment type, representing comments on articles and users.
     Comment,
-    /// The Job type, representing jobs.
+    /// The job type, representing job listing.
     Job,
-    /// The Job type, representing jobs.
+    /// The poll type, representing story polls.
     Poll,
-    /// The Job type, representing jobs.
-    PollOpt,
-    /// The Job type, representing jobs.
+    /// The poll option type, representing associated choices on a poll.
+    PollOption,
+    /// The story type, representing homepage story posts.
     Story,
     /// An unknown type in the case a match is not found for the item type
     Unknown,
@@ -87,7 +87,7 @@ impl HackerNewsItem {
             ITEM_TYPE_COMMENT => HackerNewsItemType::Comment,
             ITEM_TYPE_JOB => HackerNewsItemType::Job,
             ITEM_TYPE_POLL => HackerNewsItemType::Poll,
-            ITEM_TYPE_POLLOPT => HackerNewsItemType::PollOpt,
+            ITEM_TYPE_POLLOPT => HackerNewsItemType::PollOption,
             ITEM_TYPE_STORY => HackerNewsItemType::Story,
             _ => HackerNewsItemType::Unknown,
         }
@@ -122,7 +122,7 @@ impl HackerNewsItem {
 
     /// Determines if the item type is a poll option.
     pub fn is_pollopt(&self) -> bool {
-        self.is_item_type(HackerNewsItemType::PollOpt)
+        self.is_item_type(HackerNewsItemType::PollOption)
     }
 
     /// Determines if the item type is a story.

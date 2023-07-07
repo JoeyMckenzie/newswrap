@@ -28,5 +28,9 @@ name = "simple"
 path = "examples/with_simple_client.rs"
 
 [[example]]
-name = "stories"
+name = "axum"
 path = "examples/with_axum.rs"
+
+[[example]]
+name = "realtime"
+path = "examples/with_realtime_items.rs"

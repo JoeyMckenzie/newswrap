@@ -2,11 +2,16 @@
 //! application authors should expect to bring an async runtime of their choosing. There are currently no plans to provide
 //! a blocking API, though this may change in future releases.
 
+use std::time::Duration;
+
 use crate::{
-    errors::HackerNewsResult,
+    errors::{HackerNewsClientError, HackerNewsResult},
     items::comments::HackerNewsComment,
     items::HackerNewsItem,
-    items::{jobs::HackerNewsJob, poll::HackerNewsPoll},
+    items::{
+        jobs::HackerNewsJob, poll_options::HackerNewsPollOption, polls::HackerNewsPoll,
+        stories::HackerNewsStory,
+    },
     users::HackerNewsUser,
     HackerNewsID, API_BASE_URL, DEFAULT_TIMEOUT_SECONDS, ITEM_ENDPOINT, USERS_ENDPOINT,
 };
@@ -23,7 +28,16 @@ const USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VE
 
 /// A wrapping HTTP client for Hacker News Firebase API and real-time data.
 /// A client instance should only be instantiated once in an application's
-/// lifecycle, seeking to reuse it where possible.
+/// lifecycle, seeking to reuse it where possible. Clients can be configured
+/// with requests timeouts in seconds, defaulting to 10 seconds.
+///
+/// ```no_run
+/// // Default client with 10 second timeout
+/// let default_timeout_client = HackerNewsClient::new();
+///
+/// // Or, with an optional timeout
+/// let custom_client = HackerNewsClient::new_with_timeout(10);
+/// ```
 #[derive(Debug)]
 pub struct HackerNewsClient {
     /// An internal HTTP client to be used for connections to the Hacker News API.
@@ -40,9 +54,9 @@ impl Default for HackerNewsClient {
 
 impl HackerNewsClient {
     /// Internally constructs the client allowing for flexibility in configuring the timeout.
-    fn new_client(timeout: u64) -> Self {
+    fn new_client(timeout: std::time::Duration) -> Self {
         let client = reqwest::ClientBuilder::new()
-            .timeout(std::time::Duration::from_secs(timeout))
+            .timeout(timeout)
             .user_agent(USER_AGENT)
             .build()
             .unwrap();
@@ -55,12 +69,19 @@ impl HackerNewsClient {
 
     /// Constructs a new client pointing to the latest Hacker News API version.
     pub fn new() -> Self {
-        Self::new_client(DEFAULT_TIMEOUT_SECONDS)
+        let duration = std::time::Duration::from_secs(DEFAULT_TIMEOUT_SECONDS);
+        Self::new_client(duration)
     }
 
-    /// Constructs a new client pointing to the latest Hacker News API version with the configured request timeout.
-    pub fn new_with_timeout(timeout: u64) -> Self {
-        Self::new_client(timeout)
+    /// Constructs a new client pointing to the latest Hacker News API version with the configured request timeout in seconds.
+    pub fn new_with_timeout_secs(timeout: u64) -> Self {
+        let duration = std::time::Duration::from_secs(timeout);
+        Self::new_client(duration)
+    }
+
+    /// Constructs a new client pointing to the latest Hacker News API version with the configured request timeout duration.
+    pub fn new_with_timeout_duration(duration: Duration) -> Self {
+        Self::new_client(duration)
     }
 
     /// Constructs the base URL including the version.
@@ -108,40 +129,42 @@ impl HackerNewsClient {
         Ok(user)
     }
 
-    // TODO: get this to work
-    // async fn get_typed_item<T>(&self, id: HackerNewsID) -> HackerNewsResult<T>
-    // where
-    //     HackerNewsClientError: From<<T as TryFrom<HackerNewsItem>>::Error>,
-    //     T: TryFrom<HackerNewsItem>,
-    // {
-    //     let item = self.get_item(id).await?;
-    //     let typed_item = item.try_into()?;
-    //     Ok(typed_item)
-    // }
+    /// Generic retrieval of various hacker news items assuming they are validly convertible to a subtype.
+    async fn get_typed_item<T>(&self, id: HackerNewsID) -> HackerNewsResult<T>
+    where
+        HackerNewsClientError: From<<T as TryFrom<HackerNewsItem>>::Error>,
+        T: TryFrom<HackerNewsItem>,
+    {
+        let item = self.get_item(id).await?;
+        let typed_item = item.try_into()?;
+        Ok(typed_item)
+    }
 
-    // /// Retrieves a story from Hacker News, returning errors if the item was not a valid story type.
-    // pub async fn get_story(&self, id: HackerNewsID) -> HackerNewsResult<HackerNewsStory> {
-    //     self.get_typed_item(id).await?
-    // }
+    /// Retrieves a story from Hacker News, returning errors if the item was not a valid story type.
+    pub async fn get_story(&self, id: HackerNewsID) -> HackerNewsResult<HackerNewsStory> {
+        self.get_typed_item(id).await
+    }
 
     /// Retrieves a story comment from Hacker News, returning errors if the item was not a valid comment type.
     pub async fn get_comment(&self, id: HackerNewsID) -> HackerNewsResult<HackerNewsComment> {
-        let item = self.get_item(id).await?;
-        let comment = item.try_into()?;
-        Ok(comment)
+        self.get_typed_item(id).await
     }
 
     /// Retrieves a job posting from Hacker News, returning errors if the item was not a valid job posting type.
     pub async fn get_job(&self, id: HackerNewsID) -> HackerNewsResult<HackerNewsJob> {
-        let item = self.get_item(id).await?;
-        let job = item.try_into()?;
-        Ok(job)
+        self.get_typed_item(id).await
     }
 
     /// Retrieves a poll from Hacker News, returning errors if the item was not a valid poll type.
     pub async fn get_poll(&self, id: HackerNewsID) -> HackerNewsResult<HackerNewsPoll> {
-        let item = self.get_item(id).await?;
-        let poll = item.try_into()?;
-        Ok(poll)
+        self.get_typed_item(id).await
+    }
+
+    /// Retrieves a poll option from Hacker News, returning errors if the item was not a valid poll option type.
+    pub async fn get_poll_option(
+        &self,
+        id: HackerNewsID,
+    ) -> HackerNewsResult<HackerNewsPollOption> {
+        self.get_typed_item(id).await
     }
 }

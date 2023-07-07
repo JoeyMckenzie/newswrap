@@ -54,6 +54,7 @@
 pub mod client;
 pub mod errors;
 pub mod items;
+pub mod realtime;
 pub mod users;
 
 /// The ID associated to all Hacker News items and users.

@@ -1,13 +1,13 @@
 [package]
-name = "hacker-rs"
-version = "0.1.5"
+name = "newswrap"
+version = "0.1.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
-documentation = "https://docs.rs/hacker-rs"
-homepage = "https://github.com/joeymckenzie/hacker-rs/"
-repository = "https://github.com/joeymckenzie/hacker-rs/"
+documentation = "https://docs.rs/newswrap"
+homepage = "https://github.com/joeymckenzie/newswrap/"
+repository = "https://github.com/joeymckenzie/newswrap/"
 authors = ["Joey McKenzie <joey.mckenzie27@gmail.com>"]
-keywords = ["hackernews"]
+keywords = ["hackernews", "hacker news", "hacker news api"]
 categories = ["api-bindings"]
 readme = "README.md"
 description = "Hacker News API bindings for rust."

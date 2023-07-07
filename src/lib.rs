@@ -1,25 +1,45 @@
 //! [Hacker News](https://news.ycombinator.com/) API bindings for Rust.
 //!
-//! ```compile_fail
-//! let client = HackerNewsClient::new();
+//! ```
+//! use hacker_rs::{client::HackerNewsClient, errors::HackerNewsClientError};
 //!
-//! // Call various endpoints with your client instance
-//! let first_item = client.get_item(69).await?;
-//! dbg!(&first_item);
+//! #[tokio::main]
+//! async fn main() -> Result<(), HackerNewsClientError> {
+//!     // Build your client at the start of your application process
+//!     let client = HackerNewsClient::new();
 //!
-//! // Determine what the item type is
-//! let item_type = first_item.get_item_type();
-//! dbg!(item_type);
+//!     // Optionally build your client with a configured request timeout
+//!     let _client_with_timeout = HackerNewsClient::new_with_timeout(2);
 //!
-//! // Check if the item is job
-//! assert!(first_item.is_comment());
+//!     // Call various endpoints with your client instance
+//!     let unknown_item = client.get_item(69).await?;
+//!     dbg!(&unknown_item);
 //!
-//! // Retrieve user information
-//! let user = client.get_user("joeymckenzie").await?;
-//! dbg!(user);
+//!     // Determine what the item type is
+//!     let item_type = unknown_item.get_item_type();
+//!     dbg!(item_type);
+//!
+//!     // Check if the item is job
+//!     assert!(unknown_item.is_story());
+//!
+//!     // Conveniently request typed items for known IDs
+//!     let story_item = client.get_story(69).await?;
+//!     dbg!(&story_item);
+//!
+//!     // Get child comments associated to the story
+//!     let comment = client
+//!         .get_item(*story_item.comments.first().unwrap())
+//!         .await?;
+//!     dbg!(comment);
+//!
+//!     // Retrieve user information
+//!     let user = client.get_user("joeymckenzie").await?;
+//!     dbg!(user);
+//!
+//!     Ok(())
+//! }
 //! ```
 
-#![feature(type_alias_impl_trait)]
 #![forbid(unsafe_code, dead_code)]
 #![warn(
     missing_docs,

@@ -27,6 +27,8 @@ pub struct HackerNewsStory {
     pub url: String,
     /// Username of the story poster.
     pub by: String,
+    /// Text associated to the story.
+    pub text: String,
 }
 
 impl TryFrom<HackerNewsItem> for HackerNewsStory {
@@ -48,6 +50,7 @@ impl TryFrom<HackerNewsItem> for HackerNewsStory {
             title: item.title.unwrap_or_default(),
             url: item.url.unwrap_or_default(),
             by: item.by.unwrap_or_default(),
+            text: item.text.unwrap_or_default(),
         })
     }
 }

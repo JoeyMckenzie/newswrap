@@ -11,7 +11,7 @@ async fn main() -> Result<(), HackerNewsClientError> {
         HackerNewsClient::new_with_timeout_duration(std::time::Duration::from_millis(500));
 
     // Call various endpoints with your client instance
-    let generic_item = client.get_item(69).await?;
+    let generic_item = client.items.get_item(69).await?;
     dbg!(&generic_item);
 
     // Determine what the item type is
@@ -22,30 +22,31 @@ async fn main() -> Result<(), HackerNewsClientError> {
     assert!(generic_item.is_story());
 
     // Conveniently request typed items for known IDs
-    let story_item = client.get_story(69).await?;
+    let story_item = client.items.get_story(69).await?;
     dbg!(&story_item);
 
     // Get child comments associated to the story
     let comment = client
+        .items
         .get_item(*story_item.comments.first().unwrap())
         .await?;
     dbg!(comment);
 
     // Errors will occur when requesting an incorrectly typed item
-    let not_a_story_item = client.get_story(192327).await;
+    let not_a_story_item = client.items.get_story(192327).await;
     assert!(not_a_story_item.is_err());
     dbg!(not_a_story_item.unwrap_err());
 
     // Get poll and poll options
-    let poll = client.get_poll(126809).await?;
+    let poll = client.items.get_poll(126809).await?;
     dbg!(&poll);
 
     let first_poll_option = poll.poll_options.first().unwrap();
-    let poll_option = client.get_poll_option(*first_poll_option).await?;
+    let poll_option = client.items.get_poll_option(*first_poll_option).await?;
     dbg!(poll_option);
 
     // Retrieve user information
-    let user = client.get_user("joeymckenzie").await?;
+    let user = client.users.get_user("joeymckenzie").await?;
     dbg!(user);
 
     Ok(())

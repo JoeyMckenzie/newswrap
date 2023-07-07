@@ -1,5 +1,7 @@
 //! User response models and various metadata about accounts and related objects.
 
+pub mod client;
+
 use serde::Deserialize;
 use time::OffsetDateTime;
 

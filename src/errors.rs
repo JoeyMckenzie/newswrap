@@ -1,6 +1,6 @@
 //! Various errors and their conversions for Hacker News API interactions.
 
-use std::convert::Infallible;
+use std::{convert::Infallible, num::ParseIntError};
 
 use thiserror::Error;
 
@@ -24,9 +24,12 @@ pub enum HackerNewsClientError {
     /// Represents an error on an item missing a valid parent item.
     #[error("An associated parent was not found for item {0}")]
     AssociatedParentNotFound(HackerNewsID),
-    /// Represents and item that failed to identify as one of the known Hacker News item types.
+    /// Represents an item that failed to identify as one of the known Hacker News item types.
     #[error("An implicit conversion could not be performed for the item {0}.")]
     ImplicitConversionError(HackerNewsItemType),
+    /// Represents a request to an endpoint returning an ID that failed to parse.
+    #[error("Could not convert the response into a valid ID.")]
+    InvalidIdentifier(#[from] ParseIntError),
     /// Represents a seemingly infallible operation that has occurred.
     #[error(
         "An infallible operation has occurred. If you're seeing this, please report an issue!"

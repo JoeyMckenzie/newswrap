@@ -1,7 +1,8 @@
 //! Item response types associated to various Hacker News posts, comments, users, etc.
 //! Items are top level items in the Hacker News API and represent all stories, comments,
-//! polls, jobs, and pollopts. Items contain a `type` identifying which entity they represent.
+//! polls, jobs, and poll options. Items contain a `type` identifying which entity they represent.
 
+pub mod client;
 pub mod comments;
 pub mod jobs;
 pub mod poll_options;
@@ -18,7 +19,7 @@ use crate::HackerNewsID;
 const ITEM_TYPE_COMMENT: &str = "comment";
 const ITEM_TYPE_JOB: &str = "job";
 const ITEM_TYPE_POLL: &str = "poll";
-const ITEM_TYPE_POLLOPT: &str = "pollopt";
+const ITEM_TYPE_POLL_OPTIONS: &str = "pollopt";
 const ITEM_TYPE_STORY: &str = "story";
 
 /// Hacker News response type included on each item retrieval.
@@ -87,7 +88,7 @@ impl HackerNewsItem {
             ITEM_TYPE_COMMENT => HackerNewsItemType::Comment,
             ITEM_TYPE_JOB => HackerNewsItemType::Job,
             ITEM_TYPE_POLL => HackerNewsItemType::Poll,
-            ITEM_TYPE_POLLOPT => HackerNewsItemType::PollOption,
+            ITEM_TYPE_POLL_OPTIONS => HackerNewsItemType::PollOption,
             ITEM_TYPE_STORY => HackerNewsItemType::Story,
             _ => HackerNewsItemType::Unknown,
         }

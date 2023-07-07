@@ -9,7 +9,7 @@
 //!     let client = HackerNewsClient::new();
 //!
 //!     // Optionally build your client with a configured request timeout
-//!     let _client_with_timeout = HackerNewsClient::new_with_timeout(2);
+//!     let _client_with_timeout = HackerNewsClient::new_with_timeout_secs(2);
 //!
 //!     // Call various endpoints with your client instance
 //!     let unknown_item = client.get_item(69).await?;
@@ -53,21 +53,9 @@
 
 pub mod client;
 pub mod errors;
-pub mod items;
-pub mod realtime;
-pub mod users;
+mod items;
+mod realtime;
+mod users;
 
 /// The ID associated to all Hacker News items and users.
-type HackerNewsID = u32;
-
-/// Current URL of the API.
-pub const API_BASE_URL: &str = "https://hacker-news.firebaseio.com";
-
-/// Item endpoint for stories, polls, news items, etc.
-pub const ITEM_ENDPOINT: &str = "item";
-
-/// User endpoint for user data and related items.
-pub const USERS_ENDPOINT: &str = "user";
-
-/// Default timeout for requests the API.
-pub const DEFAULT_TIMEOUT_SECONDS: u64 = 10;
+pub type HackerNewsID = u32;

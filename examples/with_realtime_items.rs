@@ -9,5 +9,9 @@ async fn main() -> Result<(), HackerNewsClientError> {
     let latest_id = client.realtime.get_latest_item_id().await?;
     dbg!(latest_id);
 
+    // Get the latest stories IDs
+    let latest_stories = client.realtime.get_latest_stories().await?;
+    dbg!(latest_stories);
+
     Ok(())
 }

@@ -17,14 +17,20 @@ impl InternalHttpClient {
         Self { http, base_url }
     }
 
-    /// Exposes the internal client for configuring requests manually, should only be used as an escape hatch.
-    pub fn get_client(&self) -> reqwest::Client {
-        self.http.clone()
-    }
+    /// Retrieves an item from Hacker News generic over the endpoint being called.
+    pub async fn get_item<T: for<'de> Deserialize<'de>>(
+        &self,
+        endpoint: &str,
+    ) -> HackerNewsResult<T> {
+        let item = self
+            .http
+            .get(format!("{}/{}.json", self.base_url, endpoint))
+            .send()
+            .await?
+            .json::<T>()
+            .await?;
 
-    /// Exposes the base URL, should be used in conjunction with the exposed client for manual requests.
-    pub fn api_base_url(&self) -> &'static str {
-        self.base_url
+        Ok(item)
     }
 
     /// Retrieves an item from Hacker News generic over the endpoint being called.

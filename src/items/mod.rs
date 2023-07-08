@@ -122,7 +122,7 @@ impl HackerNewsItem {
     }
 
     /// Determines if the item type is a poll option.
-    pub fn is_pollopt(&self) -> bool {
+    pub fn is_poll_option(&self) -> bool {
         self.is_item_type(HackerNewsItemType::PollOption)
     }
 

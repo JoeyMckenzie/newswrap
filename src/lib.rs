@@ -41,9 +41,9 @@
 pub mod client;
 pub mod errors;
 mod http;
-mod items;
-mod realtime;
-mod users;
+pub mod items;
+pub mod realtime;
+pub mod users;
 
 /// The ID associated to all Hacker News items and users.
 pub type HackerNewsID = u32;

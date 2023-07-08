@@ -4,6 +4,7 @@ use std::rc::Rc;
 
 use crate::{
     errors::{HackerNewsClientError, HackerNewsResult},
+    http::InternalHttpClient,
     HackerNewsID,
 };
 
@@ -17,29 +18,21 @@ const ITEM_ENDPOINT: &str = "item";
 /// An internal items client for interacting with item endpoints.
 #[derive(Debug)]
 pub struct HackerNewsItemClient {
-    ref_client: Rc<reqwest::Client>,
-    base_url: &'static str,
+    internal_client: Rc<InternalHttpClient>,
 }
 
 impl HackerNewsItemClient {
     /// Constructs a new item client for interacting with the item endpoints using the internal HTTP client.
-    pub fn new(ref_client: Rc<reqwest::Client>, base_url: &'static str) -> Self {
-        Self {
-            ref_client,
-            base_url,
-        }
+    pub fn new(internal_client: Rc<InternalHttpClient>) -> Self {
+        Self { internal_client }
     }
 
     /// Retrieves item information based on the given ID.
     pub async fn get_item(&self, id: HackerNewsID) -> HackerNewsResult<HackerNewsItem> {
         let item = self
-            .ref_client
-            .get(format!("{}/{}/{}.json", self.base_url, ITEM_ENDPOINT, id))
-            .send()
-            .await?
-            .json::<HackerNewsItem>()
+            .internal_client
+            .get_item_with_id(ITEM_ENDPOINT, id)
             .await?;
-
         Ok(item)
     }
 

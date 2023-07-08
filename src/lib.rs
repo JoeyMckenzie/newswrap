@@ -1,4 +1,4 @@
-//! [Hacker News](https://news.ycombinator.com/) API bindings for Rust.
+//! [Hacker News](https://news.ycombinator.com/) API bindings for Rust with full async support.
 //!
 //! ```
 //! use newswrap::{client::HackerNewsClient, errors::HackerNewsClientError};
@@ -53,6 +53,7 @@
 
 pub mod client;
 pub mod errors;
+mod http;
 mod items;
 mod realtime;
 mod users;

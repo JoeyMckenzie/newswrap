@@ -5,8 +5,8 @@
 use std::{rc::Rc, time::Duration};
 
 use crate::{
-    items::client::HackerNewsItemClient, realtime::client::HackerNewsRealtimeClient,
-    users::client::HackerNewsUserClient,
+    http::InternalHttpClient, items::client::HackerNewsItemClient,
+    realtime::client::HackerNewsRealtimeClient, users::client::HackerNewsUserClient,
 };
 
 /// Version information for the Hacker News API containing the base URLs.
@@ -66,10 +66,11 @@ impl HackerNewsClient {
             .user_agent(USER_AGENT)
             .build()
             .unwrap();
-        let ref_client = Rc::new(client);
-        let item_client = HackerNewsItemClient::new(ref_client.clone(), API_BASE_URL);
-        let user_client = HackerNewsUserClient::new(ref_client.clone(), API_BASE_URL);
-        let realtime_client = HackerNewsRealtimeClient::new(ref_client, API_BASE_URL);
+        let internal_client = InternalHttpClient::new(client, API_BASE_URL);
+        let ref_client = Rc::new(internal_client);
+        let item_client = HackerNewsItemClient::new(ref_client.clone());
+        let user_client: HackerNewsUserClient = HackerNewsUserClient::new(ref_client.clone());
+        let realtime_client = HackerNewsRealtimeClient::new(ref_client);
 
         Self {
             items: item_client,

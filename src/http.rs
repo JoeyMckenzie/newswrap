@@ -7,31 +7,34 @@ use crate::errors::HackerNewsResult;
 /// An internal reqwest-based HTTP client for interacting with Hacker News.
 #[derive(Debug)]
 pub struct InternalHttpClient {
-    reqwest: reqwest::Client,
+    http: reqwest::Client,
     base_url: &'static str,
 }
 
 impl InternalHttpClient {
-    pub fn new(reqwest: reqwest::Client, base_url: &'static str) -> Self {
-        Self { reqwest, base_url }
+    /// Constructs a new internal client with the base URL of the Hacker News API and the configured HTTP client.
+    pub fn new(http: reqwest::Client, base_url: &'static str) -> Self {
+        Self { http, base_url }
     }
 
-    // TODO: Don't really want to do this, will clean up later
+    /// Exposes the internal client for configuring requests manually, should only be used as an escape hatch.
     pub fn get_client(&self) -> reqwest::Client {
-        self.reqwest.clone()
+        self.http.clone()
     }
 
+    /// Exposes the base URL, should be used in conjunction with the exposed client for manual requests.
     pub fn api_base_url(&self) -> &'static str {
         self.base_url
     }
 
+    /// Retrieves an item from Hacker News generic over the endpoint being called.
     pub async fn get_item_with_id<T: for<'de> Deserialize<'de>>(
         &self,
         endpoint: &str,
         id: impl Display,
     ) -> HackerNewsResult<T> {
         let item = self
-            .reqwest
+            .http
             .get(format!("{}/{}/{}.json", self.base_url, endpoint, id))
             .send()
             .await?

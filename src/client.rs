@@ -65,6 +65,7 @@ impl HackerNewsClient {
             .timeout(timeout)
             .user_agent(USER_AGENT)
             .build()
+            // TODO: probably move this to a builder of sorts, if this panics we have much bigger problems
             .unwrap();
         let internal_client = InternalHttpClient::new(client, API_BASE_URL);
         let ref_client = Rc::new(internal_client);

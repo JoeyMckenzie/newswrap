@@ -76,4 +76,4 @@ async fn main() -> Result<(), HackerNewsClientError> {
 
 ```
 
-Under the hood, newswrap relies on [https://docs.rs/reqwest/latest/reqwest/](https://docs.rs/reqwest/latest/reqwest/) for collecting information from the Hacker News API via HTTP. It's advised for consumers of the newswrap client to instantiate a single instance at the start of your application process. [Examples](https://github.com/JoeyMckenzie/newswrap/tree/main/examples) are available for using clients in binary applications and web applications (with axum).
+Under the hood, newswrap relies on [reqwest](https://docs.rs/reqwest/latest/reqwest/) for collecting information from the Hacker News API via HTTP. It's advised for consumers of the newswrap client to instantiate a single instance at the start of your application process. [Examples](https://github.com/JoeyMckenzie/newswrap/tree/main/examples) are available for using clients in binary applications and web applications (with axum).

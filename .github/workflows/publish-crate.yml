@@ -1,4 +1,4 @@
-name: Deploy to crates.io
+name: crates.io
 
 on:
   create:

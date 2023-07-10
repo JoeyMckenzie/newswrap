@@ -2,14 +2,13 @@
 
 pub mod client;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use time::OffsetDateTime;
 
 use crate::HackerNewsID;
 
 /// Represents a Hacker News user and their associated metadata.
-#[derive(Debug, Deserialize)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct HackerNewsUser {
     /// Username of the account.
     pub id: String,

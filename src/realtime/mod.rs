@@ -1,7 +1,7 @@
 //! Data associated to the live data API endpoints pertaining to top stories, latest items, recently updated users, etc.
 //! Live data endpoints will vary in terms of their content and provide realtime insights into data captured by Hacker News.
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::HackerNewsID;
 
@@ -11,7 +11,7 @@ pub mod client;
 type HackerNewsItemList = Vec<HackerNewsID>;
 
 /// Recently changed items and profiles from the live data endpoints.
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct HackerNewsUpdatedItems {
     /// Represents recently updated item IDs.
     pub items: HackerNewsItemList,

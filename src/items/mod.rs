@@ -11,7 +11,7 @@ pub mod stories;
 
 use std::fmt::Display;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use time::OffsetDateTime;
 
 use crate::HackerNewsID;
@@ -46,8 +46,7 @@ impl Display for HackerNewsItemType {
 }
 
 /// Represents a Hacker News item returned from the item endpoint.
-#[derive(Debug, Deserialize)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct HackerNewsItem {
     /// The item's unique id.
     pub id: HackerNewsID,

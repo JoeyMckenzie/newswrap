@@ -1,5 +1,6 @@
 //! Story comments associated to Hacker News stories  and all associated data.
 
+use serde::Serialize;
 use time::OffsetDateTime;
 
 use crate::{
@@ -9,8 +10,7 @@ use crate::{
 };
 
 /// Represents a Hacker News story comment and all associated data to it including author and child comments.
-#[derive(Debug)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[derive(Debug, Serialize)]
 pub struct HackerNewsComment {
     /// The item's unique id.
     pub id: HackerNewsID,

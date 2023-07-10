@@ -30,6 +30,9 @@ pub enum HackerNewsClientError {
     /// Represents a request to an endpoint returning an ID that failed to parse.
     #[error("Could not convert the response into a valid ID.")]
     InvalidIdentifier(#[from] ParseIntError),
+    /// Represents missing item or user data returned from the API,
+    #[error("Item or user {0} was not found.")]
+    ItemOrUserNotFound(String),
     /// Represents a seemingly infallible operation that has occurred.
     #[error(
         "An infallible operation has occurred. If you're seeing this, please report an issue!"

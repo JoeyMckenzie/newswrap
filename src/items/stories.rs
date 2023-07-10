@@ -1,5 +1,6 @@
 //! Stories listed on the Hacker News homepage and all associated data.
 
+use serde::Serialize;
 use time::OffsetDateTime;
 
 use crate::{
@@ -9,8 +10,7 @@ use crate::{
 };
 
 /// Represents a Hacker News story and all associated data to it including author, text, and child comments.
-#[derive(Debug)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[derive(Debug, Serialize)]
 pub struct HackerNewsStory {
     /// The item's unique id.
     pub id: HackerNewsID,

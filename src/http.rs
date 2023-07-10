@@ -22,15 +22,21 @@ impl InternalHttpClient {
         &self,
         endpoint: &str,
     ) -> HackerNewsResult<T> {
-        let item = self
+        let item_result = self
             .http
             .get(format!("{}/{}.json", self.base_url, endpoint))
             .send()
-            .await?
-            .json::<T>()
-            .await?;
+            .await;
 
-        Ok(item)
+        match item_result {
+            Ok(item) => {
+                let parsed_item = item.json::<T>().await?;
+                Ok(parsed_item)
+            }
+            Err(_) => Err(crate::errors::HackerNewsClientError::ItemOrUserNotFound(
+                endpoint.to_string(),
+            )),
+        }
     }
 
     /// Retrieves an item from Hacker News generic over the endpoint being called.
@@ -39,14 +45,20 @@ impl InternalHttpClient {
         endpoint: &str,
         id: impl Display,
     ) -> HackerNewsResult<T> {
-        let item = self
+        let item_result = self
             .http
             .get(format!("{}/{}/{}.json", self.base_url, endpoint, id))
             .send()
-            .await?
-            .json::<T>()
-            .await?;
+            .await;
 
-        Ok(item)
+        match item_result {
+            Ok(item) => {
+                let parsed_item = item.json::<T>().await?;
+                Ok(parsed_item)
+            }
+            Err(_) => Err(crate::errors::HackerNewsClientError::ItemOrUserNotFound(
+                id.to_string(),
+            )),
+        }
     }
 }

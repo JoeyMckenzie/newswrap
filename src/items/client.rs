@@ -1,7 +1,5 @@
 //! A client for interacting with item types and endpoints.
 
-use std::rc::Rc;
-
 use crate::{
     errors::{HackerNewsClientError, HackerNewsResult},
     http::InternalHttpClient,
@@ -18,12 +16,12 @@ const ITEM_ENDPOINT: &str = "item";
 /// An internal items client for interacting with item endpoints.
 #[derive(Debug)]
 pub struct HackerNewsItemClient {
-    internal_client: Rc<InternalHttpClient>,
+    internal_client: InternalHttpClient,
 }
 
 impl HackerNewsItemClient {
     /// Constructs a new item client for interacting with the item endpoints using the internal HTTP client.
-    pub fn new(internal_client: Rc<InternalHttpClient>) -> Self {
+    pub fn new(internal_client: InternalHttpClient) -> Self {
         Self { internal_client }
     }
 

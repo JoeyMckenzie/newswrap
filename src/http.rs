@@ -5,7 +5,7 @@ use serde::Deserialize;
 use crate::errors::HackerNewsResult;
 
 /// An internal reqwest-based HTTP client for interacting with Hacker News.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct InternalHttpClient {
     http: reqwest::Client,
     base_url: &'static str,

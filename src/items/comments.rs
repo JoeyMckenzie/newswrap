@@ -10,6 +10,7 @@ use crate::{
 
 /// Represents a Hacker News story comment and all associated data to it including author and child comments.
 #[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct HackerNewsComment {
     /// The item's unique id.
     pub id: HackerNewsID,

@@ -9,6 +9,7 @@ use crate::HackerNewsID;
 
 /// Represents a Hacker News user and their associated metadata.
 #[derive(Debug, Deserialize)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct HackerNewsUser {
     /// Username of the account.
     pub id: String,

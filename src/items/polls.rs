@@ -10,6 +10,7 @@ use crate::{
 
 /// Represents a Hacker News poll and all associated data including comments on the poll, poll options, etc.
 #[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct HackerNewsPoll {
     /// The item's unique id.
     pub id: HackerNewsID,

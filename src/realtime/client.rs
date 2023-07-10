@@ -1,15 +1,13 @@
 //! Realtime client API for interacting with live data endpoints of Hacker News.
 
-use std::rc::Rc;
-
 use crate::{errors::HackerNewsResult, http::InternalHttpClient, HackerNewsID};
 
 use super::{HackerNewsItemList, HackerNewsUpdatedItems};
 
-/// an internal client for interacting with the realtime data endpoints.
+/// An internal client for interacting with the realtime data endpoints.
 #[derive(Debug)]
 pub struct HackerNewsRealtimeClient {
-    internal_client: Rc<InternalHttpClient>,
+    internal_client: InternalHttpClient,
 }
 
 /// Endpoint for the latest item ID.
@@ -30,7 +28,7 @@ const UPDATES_ENDPOINT: &str = "updates";
 
 impl HackerNewsRealtimeClient {
     /// Constructs a new instance of the realtime client from the root HTTP client.
-    pub fn new(internal_client: Rc<InternalHttpClient>) -> Self {
+    pub fn new(internal_client: InternalHttpClient) -> Self {
         Self { internal_client }
     }
 

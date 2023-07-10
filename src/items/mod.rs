@@ -47,6 +47,7 @@ impl Display for HackerNewsItemType {
 
 /// Represents a Hacker News item returned from the item endpoint.
 #[derive(Debug, Deserialize)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct HackerNewsItem {
     /// The item's unique id.
     pub id: HackerNewsID,

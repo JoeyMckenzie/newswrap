@@ -19,6 +19,9 @@ serde_json = "1"
 thiserror = "1"
 time = { version = "0.3", features = ["serde-well-known"] }
 
+[features]
+serde = ["serde/derive"]
+
 [dev-dependencies]
 tokio = { version = "1", features = ["full"] }
 axum = "0.6"
@@ -30,6 +33,7 @@ path = "examples/with_simple_client.rs"
 [[example]]
 name = "axum"
 path = "examples/with_axum.rs"
+required-features = ["serde"]
 
 [[example]]
 name = "realtime"

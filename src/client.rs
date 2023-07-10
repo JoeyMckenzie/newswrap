@@ -2,7 +2,7 @@
 //! application authors should expect to bring an async runtime of their choosing. There are currently no plans to provide
 //! a blocking API, though this may change in future releases.
 
-use std::{rc::Rc, time::Duration};
+use std::time::Duration;
 
 use crate::{
     http::InternalHttpClient, items::client::HackerNewsItemClient,
@@ -67,11 +67,11 @@ impl HackerNewsClient {
             .build()
             // TODO: probably move this to a builder of sorts, if this panics we have much bigger problems
             .unwrap();
+
         let internal_client = InternalHttpClient::new(client, API_BASE_URL);
-        let ref_client = Rc::new(internal_client);
-        let item_client = HackerNewsItemClient::new(ref_client.clone());
-        let user_client: HackerNewsUserClient = HackerNewsUserClient::new(ref_client.clone());
-        let realtime_client = HackerNewsRealtimeClient::new(ref_client);
+        let item_client = HackerNewsItemClient::new(internal_client.clone());
+        let user_client: HackerNewsUserClient = HackerNewsUserClient::new(internal_client.clone());
+        let realtime_client = HackerNewsRealtimeClient::new(internal_client);
 
         Self {
             items: item_client,

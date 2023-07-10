@@ -1,7 +1,5 @@
 //! User interactions, models, and endpoints for the Hacker News API.
 
-use std::rc::Rc;
-
 use crate::{errors::HackerNewsResult, http::InternalHttpClient};
 
 use super::HackerNewsUser;
@@ -11,12 +9,12 @@ const USER_ENDPOINT: &str = "user";
 /// An internal users client for interacting with user endpoints.
 #[derive(Debug)]
 pub struct HackerNewsUserClient {
-    internal_client: Rc<InternalHttpClient>,
+    internal_client: InternalHttpClient,
 }
 
 impl HackerNewsUserClient {
     /// Constructs a new instance of the user client from the root HTTP client.
-    pub fn new(internal_client: Rc<InternalHttpClient>) -> Self {
+    pub fn new(internal_client: InternalHttpClient) -> Self {
         Self { internal_client }
     }
 

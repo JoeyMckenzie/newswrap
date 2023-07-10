@@ -31,3 +31,16 @@ async fn return_ok_when_using_typed_clients() {
     // assert
     assert!(item_result.is_ok());
 }
+
+#[tokio::test]
+async fn return_err_on_invalid_typed_client() {
+    // arrange
+    let client = HackerNewsClient::new();
+    let not_a_poll_id = 69_u32;
+
+    // act
+    let item_result = client.items.get_poll(not_a_poll_id).await;
+
+    // assert
+    assert!(item_result.is_err());
+}

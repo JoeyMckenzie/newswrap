@@ -47,7 +47,11 @@ async fn main() -> Result<(), HackerNewsClientError> {
 
     // Retrieve user information
     let user = client.users.get_user("joeymckenzie").await?;
-    dbg!(user);
+    dbg!(&user);
+
+    if let Some(about_section) = user.about {
+        println!("{}", about_section);
+    }
 
     Ok(())
 }

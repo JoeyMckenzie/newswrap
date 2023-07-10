@@ -1,6 +1,6 @@
 # Newswrap
 
-[![CI](https://github.com/JoeyMckenzie/newswrap/actions/workflows/build-ci.yml/badge.svg)](https://github.com/JoeyMckenzie/newswrap/actions/workflows/build-ci.yml) [![crates.io](https://github.com/JoeyMckenzie/newswrap/actions/workflows/publish-crate.yml/badge.svg?branch=main)](https://github.com/JoeyMckenzie/newswrap/actions/workflows/publish-crate.yml)
+[![CI](https://github.com/JoeyMckenzie/newswrap/actions/workflows/build-ci.yml/badge.svg)](https://github.com/JoeyMckenzie/newswrap/actions/workflows/build-ci.yml) [![crates.io](https://github.com/JoeyMckenzie/newswrap/actions/workflows/publish-crate.yml/badge.svg)](https://github.com/JoeyMckenzie/newswrap/actions/workflows/publish-crate.yml)
 
 [Hacker News](https://news.ycombinator.com/) API bindings for Rust.
 

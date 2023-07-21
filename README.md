@@ -5,26 +5,26 @@
 [Hacker News](https://news.ycombinator.com/) API bindings for Rust.
 
 ```rust
-use newswrap::client::HackerNewsClient;
+use newswrap::{client::HackerNewsClient, errors::HackerNewsClientError};
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> Result<(), HackerNewsClientError> {
     // Build your client at the start of your application process
     let client = HackerNewsClient::new();
 
     // Call various endpoints with your client instance
-    let first_item = client.get_item(69).await?;
-    dbg!(&first_item);
+    let generic_item = client.items.get_item(69).await?;
+    dbg!(&generic_item);
 
     // Determine what the item type is
-    let item_type = first_item.get_item_type();
+    let item_type = generic_item.get_item_type();
     dbg!(item_type);
 
     // Check if the item is job
-    assert!(first_item.is_comment());
+    assert!(generic_item.is_story());
 
     // Retrieve user information
-    let user = client.get_user("joeymckenzie").await;
+    let user = client.users.get_user("joeymckenzie").await?;
     dbg!(user);
 
     Ok(())
